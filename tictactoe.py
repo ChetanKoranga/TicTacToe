@@ -21,16 +21,21 @@ class Board:
             print("Sorry this space is already filled.")
             time.sleep(2)
 
+    def reset_cells(self):
+        self.cells = [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "]
+
     def isTie(self):
 
         for i in range(1,10):
-            isFull = True
-            if self.cells[i] == " ":
-                isFull = False
-        if isFull==True:
-            return 1
-        else:
-            return 0
+            cells_used = 0
+            for cells in self.cells:
+                if cells != " ":
+                    cells_used += 1
+            if cells_used == 9:
+                return True
+            else:
+                return False
+
 
     def winner(self):
 
@@ -79,28 +84,61 @@ while True:
     x_choice = int(input("\n X Player : Choose 1-9. >>"))
     # Update board
     bb.update_cell(x_choice,"X")
+    # Updated board
+    refresh_screen()
 
+    #Check for tie
+    if bb.isTie():
+        print("Here is a tie.")
+
+        # for playing again
+        again = input("Do you want to play again? (Y/N)").upper()
+        if again == "Y":
+            bb.reset_cells()
+            continue
+        else:
+            break
+
+    # Check if X is winner
     if bb.winner()=="X":
         refresh_screen()
         print("X is winner")
-        break
 
-    if bb.isTie():
-            refresh_screen()
-            print("Here is a tie")
+        #for playing again
+        again = input("Do you want to play again? (Y/N)").upper()
+        if again == "Y":
+            bb.reset_cells()
+            continue
+        else:
             break
 
-    refresh_screen()
+
     #Get O input
     o_choice = int(input("\n O Player : Choose 1-9. >>"))
+    #Update board
     bb.update_cell(o_choice,"O")
-
+    #Updated Board
+    refresh_screen()
+    #Check if O is winner
     if bb.winner()=="O":
         refresh_screen()
         print("O is winner")
-        break
+
+        #for playing again
+        again = input("Do you want to play again? (y/n)").upper()
+        if again == "Y":
+            bb.reset_cells()
+            continue
+        else:
+            break
+
     #Check for tie
     if bb.isTie():
-        refresh_screen()
-        print("Here is a tie")
-        break
+        print("Here is a tie.")
+        # for playing again
+        again = input("Do you want to play again? (Y/N)").upper()
+        if again == "Y":
+            bb.reset_cells()
+            continue
+        else:
+            break
